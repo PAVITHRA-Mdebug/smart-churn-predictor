@@ -62,6 +62,8 @@ input_df = pd.DataFrame([[gender, SeniorCitizen, Partner, Dependents, tenure,
                                  "tenure","MonthlyCharges","Contract","InternetService"])
 
 input_df = pd.get_dummies(input_df)
+
+# ✅ FIX: Align columns
 input_df = input_df.reindex(columns=X.columns, fill_value=0)
 
 # ----------------------------
@@ -84,6 +86,9 @@ if st.button("🔍 Predict Churn"):
     st.subheader("📊 Churn Probability Visualization")
 
     fig, ax = plt.subplots()
+    fig.patch.set_facecolor('white')
+    ax.set_facecolor('white')
+
     labels = ["Stay", "Churn"]
     values = [100 - prob, prob]
 
@@ -107,6 +112,9 @@ if st.button("🔍 Predict Churn"):
     }).sort_values(by="Importance", ascending=False)
 
     fig2, ax2 = plt.subplots()
+    fig2.patch.set_facecolor('white')
+    ax2.set_facecolor('white')
+
     ax2.barh(feat_df["Feature"][:10], feat_df["Importance"][:10])
     ax2.invert_yaxis()
     ax2.set_title("Top Influencing Features")
