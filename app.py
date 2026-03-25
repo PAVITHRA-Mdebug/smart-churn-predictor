@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
 
 # ----------------------------
 # Title
@@ -10,7 +9,7 @@ st.title("📊 Smart Customer Churn Predictor")
 st.write("Predict whether a customer will churn based on input details.")
 
 # ----------------------------
-# Sample Dataset (inside code)
+# Sample Dataset
 # ----------------------------
 data = [
     ["Male",0,"Yes","No",1,29.85,"Month-to-month","DSL","No"],
@@ -53,18 +52,19 @@ MonthlyCharges = st.slider("Monthly Charges", 10, 120, 50)
 Contract = st.selectbox("Contract Type", ["Month-to-month","One year","Two year"])
 InternetService = st.selectbox("Internet Service", ["DSL","Fiber optic","No"])
 
+# ----------------------------
 # Convert input to DataFrame
+# ----------------------------
 input_df = pd.DataFrame([[gender, SeniorCitizen, Partner, Dependents, tenure,
                           MonthlyCharges, Contract, InternetService]],
                         columns=["gender","SeniorCitizen","Partner","Dependents",
                                  "tenure","MonthlyCharges","Contract","InternetService"])
 
+# Apply same encoding
 input_df = pd.get_dummies(input_df)
 
-# Align columns
-for col in X.columns:
-    if col not in input_df.columns:
-        input_df[col] = 0
+# ✅ IMPORTANT FIX (match training columns)
+input_df = input_df.reindex(columns=X.columns, fill_value=0)
 
 # ----------------------------
 # Prediction
